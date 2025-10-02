@@ -56,7 +56,6 @@
       "maxDuration": 30
     }
   },
-  "regions": ["iad1", "sfo1", "fra1", "hnd1"],
   "github": {
     "autoAlias": false
   }
