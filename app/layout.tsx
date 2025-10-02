@@ -1,7 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Space_Grotesk } from "next/font/google"
-import { SubscriptionProvider } from "@/contexts/subscription-context"
 import "./globals.css"
 
 const spaceGrotesk = Space_Grotesk({
@@ -12,7 +11,7 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: "VOCO - AI Language Learning",
-  description: "Learn languages with AI-powered vocabulary and premium TTS voices",
+  description: "Learn languages with AI-powered vocabulary and premium TTS voices",     
   generator: "v0.app",
 }
 
@@ -26,10 +25,8 @@ export default function RootLayout({
       <head>
         <script src="https://js.puter.com/v2/"></script>
       </head>
-      <body className="font-sans" style={{ fontFamily: "var(--font-space-grotesk)" }}>
-        <SubscriptionProvider>
-          {children}
-        </SubscriptionProvider>
+      <body className="font-sans" style={{ fontFamily: "var(--font-space-grotesk)" }}>  
+        {children}
       </body>
     </html>
   )

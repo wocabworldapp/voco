@@ -16,15 +16,12 @@ const nextConfig = {
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
-  // Enable SWC minification for better performance
-  swcMinify: true,
   // Optimize for production
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
   // PWA and caching optimizations
   experimental: {
-    optimizeCss: true,
     scrollRestoration: true,
   },
   // Security headers

@@ -1,23 +1,10 @@
 "use client"
-import { useSubscription } from '@/contexts/subscription-context'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Crown, Calendar, CreditCard, ArrowLeft } from 'lucide-react'
+import { Calendar, BookOpen, ArrowLeft, Target, Zap, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
-import { SUBSCRIPTION_PLANS } from '@/lib/subscription-plans'
 
 export default function DashboardPage() {
-  const { subscription, loading } = useSubscription()
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500" />
-      </div>
-    )
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12">
       <div className="container mx-auto px-4 max-w-4xl">
@@ -28,158 +15,127 @@ export default function DashboardPage() {
               Back to Learning
             </Link>
           </Button>
-          
+
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
             Your VOCO Dashboard
           </h1>
           <p className="text-gray-600">
-            Manage your subscription and track your learning progress
+            Track your vocabulary learning progress and achievements
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {/* Subscription Status */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {/* Words Learned */}
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Crown className="h-5 w-5" />
-                Subscription Status
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <BookOpen className="h-5 w-5 text-blue-600" />
+                Words Learned
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {subscription.isActive ? (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Current Plan</span>
-                    <Badge variant="default" className="bg-green-100 text-green-800">
-                      {subscription.plan && SUBSCRIPTION_PLANS[subscription.plan]?.name}
-                    </Badge>
-                  </div>
-                  
-                  {subscription.currentPeriodEnd && (
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Renews</span>
-                      <span className="text-sm font-medium">
-                        {subscription.currentPeriodEnd.toLocaleDateString()}
-                      </span>
-                    </div>
-                  )}
-                  
-                  {subscription.cancelAtPeriodEnd && (
-                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                      <p className="text-sm text-yellow-800">
-                        Your subscription will be cancelled at the end of the current period.
-                      </p>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className="text-center space-y-4">
-                  <p className="text-gray-600">No active subscription</p>
-                  <Button asChild>
-                    <Link href="/subscription">
-                      Upgrade to Premium
-                    </Link>
-                  </Button>
-                </div>
-              )}
+              <div className="text-3xl font-bold text-blue-600 mb-1">0</div>
+              <p className="text-sm text-gray-600">Total vocabulary</p>
             </CardContent>
           </Card>
 
-          {/* Learning Stats */}
+          {/* Study Streak */}
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Calendar className="h-5 w-5" />
-                Learning Stats
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Zap className="h-5 w-5 text-green-600" />
+                Study Streak
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Words Learned</span>
-                  <span className="text-2xl font-bold text-blue-600">0</span>
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Study Streak</span>
-                  <span className="text-2xl font-bold text-green-600">0 days</span>
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Languages</span>
-                  <span className="text-2xl font-bold text-purple-600">0</span>
-                </div>
-              </div>
+              <div className="text-3xl font-bold text-green-600 mb-1">0</div>
+              <p className="text-sm text-gray-600">Days in a row</p>
+            </CardContent>
+          </Card>
+
+          {/* Languages */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Target className="h-5 w-5 text-purple-600" />
+                Languages
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-purple-600 mb-1">0</div>
+              <p className="text-sm text-gray-600">Currently learning</p>
             </CardContent>
           </Card>
         </div>
 
-        {/* Features Overview */}
-        <Card>
+        {/* Recent Activity */}
+        <Card className="mb-6">
           <CardHeader>
-            <CardTitle>Available Features</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <Calendar className="h-5 w-5" />
+              Recent Activity
+            </CardTitle>
             <CardDescription>
-              {subscription.isActive 
-                ? "You have access to all premium features!"
-                : "Upgrade to unlock premium features"
-              }
+              Your latest vocabulary learning sessions
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {subscription.plan && Object.entries(SUBSCRIPTION_PLANS[subscription.plan].features).map(([index, feature]) => (
-                <div key={index} className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full" />
-                  <span className="text-sm">{feature}</span>
-                </div>
-              ))}
-              
-              {!subscription.isActive && (
-                <div className="col-span-2 text-center py-8">
-                  <p className="text-gray-500 mb-4">
-                    Upgrade to premium to unlock all features
-                  </p>
-                  <Button asChild>
-                    <Link href="/subscription">
-                      View Plans
-                    </Link>
-                  </Button>
-                </div>
-              )}
+            <div className="text-center py-8">
+              <p className="text-gray-500 mb-4">
+                No activity yet. Start learning to see your progress here!
+              </p>
+              <Button asChild>
+                <Link href="/">
+                  Start Learning
+                </Link>
+              </Button>
             </div>
           </CardContent>
         </Card>
 
-        {/* Billing Actions */}
-        {subscription.isActive && (
-          <Card className="mt-6">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <CreditCard className="h-5 w-5" />
-                Billing Management
-              </CardTitle>
-              <CardDescription>
-                Manage your payment methods and billing information
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <Button variant="outline" className="w-full md:w-auto">
-                  Update Payment Method
-                </Button>
-                <Button variant="outline" className="w-full md:w-auto ml-0 md:ml-2">
-                  Download Invoices
-                </Button>
-                {!subscription.cancelAtPeriodEnd && (
-                  <Button variant="destructive" className="w-full md:w-auto ml-0 md:ml-2">
-                    Cancel Subscription
-                  </Button>
-                )}
+        {/* Learning Stats */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="h-5 w-5" />
+              Learning Progress
+            </CardTitle>
+            <CardDescription>
+              Track your vocabulary mastery across different languages
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">Words Mastered</span>
+                <span className="text-sm font-medium">0%</span>
               </div>
-            </CardContent>
-          </Card>
-        )}
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="bg-blue-600 h-2 rounded-full" style={{ width: '0%' }}></div>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">Weekly Goal</span>
+                <span className="text-sm font-medium">0/50 words</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="bg-green-600 h-2 rounded-full" style={{ width: '0%' }}></div>
+              </div>
+
+              <div className="mt-6">
+                <h4 className="font-medium text-gray-900 mb-2">Quick Actions</h4>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button variant="outline" asChild>
+                    <Link href="/">Practice Vocabulary</Link>
+                  </Button>
+                  <Button variant="outline" asChild>
+                    <Link href="/">Review Words</Link>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )
