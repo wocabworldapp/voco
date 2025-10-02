@@ -32,24 +32,25 @@ Output Directory: (leave default)
 Install Command: npm install
 ```
 
-### Step 4: Environment Variables
-Add these environment variables in Vercel dashboard:
+### Step 4: Environment Variables (Optional)
+**No environment variables needed for initial deployment!** 
 
-#### Required Variables
+Your VoCo app will work perfectly without any environment variables. Add these later when you want to enable premium features:
+
+#### Optional Variables (for advanced features)
 ```env
-# Database
+# Database (for user progress tracking)
 DATABASE_URL=your-database-url
 
-# Authentication
+# Authentication (for user accounts)
 NEXTAUTH_SECRET=your-nextauth-secret-key
 NEXTAUTH_URL=https://your-app-name.vercel.app
 
-# Stripe (for subscriptions)
+# Stripe (for premium subscriptions)
 STRIPE_PUBLISHABLE_KEY=pk_live_or_test_key
 STRIPE_SECRET_KEY=sk_live_or_test_key
-STRIPE_WEBHOOK_SECRET=whsec_webhook_secret
 
-# Optional AI Features
+# AI Features (for enhanced translations)
 OPENAI_API_KEY=your-openai-api-key
 GOOGLE_CLOUD_API_KEY=your-google-cloud-key
 ```
