@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  // Optimized for Vercel deployment
+  output: 'standalone',
   trailingSlash: true,
-  allowedDevOrigins: ['192.168.2.19'],
+  poweredByHeader: false,
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -10,14 +11,53 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true,
+    formats: ['image/webp', 'image/avif'],
+    minimumCacheTTL: 60,
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
-  // Disable all problematic checks and compilation features
-  swcMinify: false,
-  skipTrailingSlashRedirect: true,
+  // Enable SWC minification for better performance
+  swcMinify: true,
+  // Optimize for production
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  // PWA and caching optimizations
   experimental: {
-    // Disable SWC completely for CI builds
-    forceSwcTransforms: false,
+    optimizeCss: true,
+    scrollRestoration: true,
+  },
+  // Security headers
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on'
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload'
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
+          },
+        ],
+      },
+    ]
+  },
+  // Redirects for better SEO
+  async redirects() {
+    return [
+      {
+        source: '/home',
+        destination: '/',
+        permanent: true,
+      },
+    ]
   },
 }
 
